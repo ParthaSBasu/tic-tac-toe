@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <title>Tic Tac Toe</title>
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body{
+                background-color: blanchedalmond;
+                align-items: center;
+            }
+            .container{
+                height: 80vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .game{
+                height: 60vmin;
+                width: 60vmin;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+            .box{
+                height: 18vmin;
+                width: 18vmin;
+                font-family: 'Times New Roman', Times, serif;
+                font-size: 8vmin;
+                gap: 20px;
+                column-gap: 20px;
+                border-radius: 20px;
+                background-color: rgb(102, 227, 142);
+                color: brown;
+                box-shadow: 8px 8px 0 rgb(133, 67, 93);
+            }
+            .divreset{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+            }
+            .reset{
+                padding: 10px;
+                margin: 10px;
+                width: 12vmin;
+                height: 8vmin;
+                font-size: 3vmin;
+                background-color: rgb(34, 71, 71);
+                color: #fff;
+                border-radius: 2rem;
+                box-shadow: 3px 3px 0 rgb(222, 82, 77);
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="container">
+                <div class="game">
+                    <button class="box"></button>
+                    <button class="box"></button>
+                    <button class="box"></button>
+                    <button class="box"></button>
+                    <button class="box"></button>
+                    <button class="box"></button>
+                    <button class="box"></button>
+                    <button class="box"></button>
+                    <button class="box"></button>
+                </div>
+            </div>
+            <div class="divreset">
+                <button class="reset">Reset</button>
+                <p class="showData"></p>
+            </div>           
+        </main>
+        <script>
+            const boxes=document.querySelectorAll(".box");
+            const reset=document.querySelector(".reset");
+            const disp=document.querySelector(".showData");
+            const combination=[
+                [0,1,2],
+                [3,4,5],
+                [6,7,8],
+                [0,3,6],
+                [1,4,7],
+                [2,5,8],
+                [0,4,8],
+                [2,4,6]
+            ];
+            let turn=true;
+            function showWinner(winner){
+                disp.style.display="inline-block";
+                disp.style.fontFamily="Times New Roman";
+                disp.style.fontSize="6vmin";
+                disp.style.fontWeight="bold";
+                disp.innerText=`Winner is ${winner}`;
+                for(let box of boxes){
+                    box.disabled=true;
+                }
+                return;
+            }
+            function checkWinner(){
+                for(let pattern of combination){
+                    let val1=boxes[pattern[0]].innerText;
+                    let val2=boxes[pattern[1]].innerText;
+                    let val3=boxes[pattern[2]].innerText;
+                    if(val1!=="" && val2!=="" && val3!==""){
+                        if(val1===val2 && val2===val3 && val1===val3){
+                            console.log(`Winner is ${val1}`);
+                            showWinner(val1);
+                            return;
+                        }
+                    }
+                }
+            }
+            boxes.forEach((box)=>{
+                box.addEventListener('click',()=>{
+                    if(turn===true){
+                        box.innerText="X";
+                        turn=false;
+                    }
+                    else{
+                        box.innerText="0";
+                        turn=true;
+                    }
+                    box.disabled=true;
+                    checkWinner();
+                })
+            })
+            const resetGame=()=>{
+                boxes.forEach((box)=>{
+                    box.innerText="";
+                    box.disabled=false;
+                })
+                turn=true;
+                disp.style.display="none";
+            }
+            reset.addEventListener('click',resetGame);
+        </script>
+    </body>
+</html>
